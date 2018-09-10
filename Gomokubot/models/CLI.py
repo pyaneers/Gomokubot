@@ -1,7 +1,10 @@
 import sys
 import uuid
 from textwrap import dedent
-from .gmk_board import Board
+try:
+    from .gmk_board import Board
+except ModuleNotFoundError:
+    from gmk_board import Board
 
 # stone placement verification
 
