@@ -1,20 +1,35 @@
 import sys
 import uuid
 from textwrap import dedent
-from gmk_board import Board
+from .gmk_board import Board
 
 # stone placement verification
 
 bd = Board()
 
 
-def board_test():
-    bd.stone = 1
-    bd.place_piece(7, 7)
-    bd.place_piece(7, 8)
-    bd.place_piece(7, 9)
-    bd.place_piece(7, 10)
-    bd.place_piece(7, 11)
+
+# bd.stone = 1
+
+
+# bd.place_piece(7, 7)
+# bd.place_piece(6, 8)
+# bd.place_piece(5, 9)
+# bd.place_piece(4, 10)
+# bd.place_piece(3, 11)
+
+# bd.place_piece(7, 7)
+# bd.place_piece(6, 8)
+# bd.place_piece(5, 9)
+# bd.place_piece(4, 10)
+# bd.place_piece(3, 11)
+
+
+# bd.place_piece(7, 7)
+# bd.place_piece(7, 8)
+# bd.place_piece(7, 9)
+# bd.place_piece(7, 10)
+# bd.place_piece(7, 11)
 
 
 def draw_board_row(line):
@@ -38,7 +53,7 @@ def display_board():
     board spaced for stone placement
     """
     print(f'''
-             00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14
+             00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14  [X]
              ----------------------------------------------------------
         00 | {draw_board_row(bd.board[0])}
 
@@ -69,6 +84,8 @@ def display_board():
         13 | {draw_board_row(bd.board[13])}
 
         14 | {draw_board_row(bd.board[14])}
+
+        [Y]
     ''')
 
 
@@ -88,8 +105,9 @@ if __name__ == '__main__':
     key exit : polite
     '''
     try:
-        board_test()
-        bd._board_check(7, 11)
+        # bd._board_check(7, 11)
         display_board()
+        bd._check_vertical_match(3, 11)
+
     except KeyboardInterrupt:
         exit()
