@@ -5,32 +5,16 @@ from gmk_board import Board
 
 # stone placement verification
 
-
 bd = Board()
 
 
-bd.stone = 1
-
-
-bd.place_piece(7, 7)
-
-
-bd.place_piece(7, 9)
-
-
-bd.place_piece(8, 7)
-
-
-bd.stone = 2
-
-
-bd.place_piece(7, 8)
-
-
-bd.place_piece(8, 8)
-
-
-bd.place_piece(9, 7)
+def board_test():
+    bd.stone = 1
+    bd.place_piece(7, 7)
+    bd.place_piece(7, 8)
+    bd.place_piece(7, 9)
+    bd.place_piece(7, 10)
+    bd.place_piece(7, 11)
 
 
 def draw_board_row(line):
@@ -104,6 +88,8 @@ if __name__ == '__main__':
     key exit : polite
     '''
     try:
+        board_test()
+        bd._board_check(7, 11)
         display_board()
     except KeyboardInterrupt:
         exit()
