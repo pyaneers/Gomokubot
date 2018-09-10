@@ -90,6 +90,14 @@
             "markers": "python_version < '4' and python_version != '3.1.*' and python_version != '3.0.*' and python_version >= '2.6' and python_version != '3.2.*'",
             "version": "==4.5.1"
         },
+        "flake8": {
+            "hashes": [
+                "sha256:7253265f7abd8b313e3892944044a365e3f4ac3fcdcfb4298f55ee9ddf188ba0",
+                "sha256:c7841163e2b576d435799169b78703ad6ac1bbb0f199994fc05f700b2a90ea37"
+            ],
+            "index": "pypi",
+            "version": "==3.5.0"
+        },
         "gomokubot": {
             "editable": true,
             "extras": [
@@ -187,6 +195,7 @@
             "markers": "python_version != '3.2.*' and python_version != '3.1.*' and python_version != '3.0.*' and python_version != '3.3.*' and python_version >= '2.7'",
             "version": "==1.15.1"
         },
+
         "pastedeploy": {
             "hashes": [
                 "sha256:39973e73f391335fac8bc8a8a95f7d34a9f42e2775600ce2dc518d93b37ef943",
@@ -253,6 +262,7 @@
             ],
             "version": "==2.7.5"
         },
+
         "py": {
             "hashes": [
                 "sha256:06a30435d058473046be836d3fc4f27167fd84c45b99704f2fb5509ef61f9af1",
@@ -275,7 +285,7 @@
             ],
             "version": "==1.6.4"
         },
-        "pyramid": {
+       "pyramid": {
             "hashes": [
                 "sha256:600f12e0d11211a55c2da970120af33214f77607ed45caba6af6c891afeaa771",
                 "sha256:cf89a48cb899291639686bf3d4a883b39e496151fa4871fb83cc1a3200d5b925"
@@ -306,6 +316,7 @@
             "markers": "python_version != '3.1.*' and python_version != '3.2.*' and python_version != '3.0.*' and python_version >= '2.7' and python_version != '3.3.*'",
             "version": "==1.4.1"
         },
+
         "pyramid-mako": {
             "hashes": [
                 "sha256:6da0987b9874cf53e72139624665a73965bbd7fbde504d1753e4231ce916f3a1"
@@ -431,5 +442,20 @@
             "version": "==4.5.0"
         }
     },
-    "develop": {}
+    "develop": {
+        "autopep8": {
+            "hashes": [
+                "sha256:655e3ee8b4545be6cfed18985f581ee9ecc74a232550ee46e9797b6fbf4f336d"
+            ],
+            "index": "pypi",
+            "version": "==1.4"
+        },
+        "pycodestyle": {
+            "hashes": [
+                "sha256:682256a5b318149ca0d2a9185d365d8864a768a28db66a84a2ea946bcc426766",
+                "sha256:6c4245ade1edfad79c3446fadfc96b0de2759662dc29d07d80a6f27ad1ca6ba9"
+            ],
+            "version": "==2.3.1"
+        }
+    }
 }
