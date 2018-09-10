@@ -6,7 +6,10 @@ name = "pypi"
 [packages]
 gomokubot = {editable = true, path = ".", extras = ["testing"]}
 
+
 [dev-packages]
+"flake8" = "*"
+"autopep8" = "*"
 
 [requires]
 python_version = "3.6"
