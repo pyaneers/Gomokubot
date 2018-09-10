@@ -6,31 +6,34 @@ from gmk_board import Board
 # stone placement verification
 
 
-bd = Board()
+# bd.stone = 1
 
 
-bd.stone = 1
+# bd.place_piece(7, 7)
+# bd.place_piece(6, 8)
+# bd.place_piece(5, 9)
+# bd.place_piece(4, 10)
+# bd.place_piece(3, 11)
+
+# bd.place_piece(7, 7)
+# bd.place_piece(6, 8)
+# bd.place_piece(5, 9)
+# bd.place_piece(4, 10)
+# bd.place_piece(3, 11)
 
 
-bd.place_piece(7, 7)
+# bd.place_piece(7, 7)
+# bd.place_piece(7, 8)
+# bd.place_piece(7, 9)
+# bd.place_piece(7, 10)
+# bd.place_piece(7, 11)
 
 
-bd.place_piece(7, 9)
-
-
-bd.place_piece(8, 7)
-
-
-bd.stone = 2
-
-
-bd.place_piece(7, 8)
-
-
-bd.place_piece(8, 8)
-
-
-bd.place_piece(9, 7)
+def make_move(bd, stone, y, x):
+    bd.place_piece(stone, y, x)
+    display_board(bd)
+    # import pdb; pdb.set_trace()
+    return bd._check_vertical_match(stone, y, x)
 
 
 def draw_board_row(line):
@@ -49,12 +52,12 @@ def draw_board_row(line):
     return row
 
 
-def display_board():
+def display_board(bd):
     """
     board spaced for stone placement
     """
     print(f'''
-             00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14
+             00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14  [X]
              ----------------------------------------------------------
         00 | {draw_board_row(bd.board[0])}
 
@@ -85,6 +88,8 @@ def display_board():
         13 | {draw_board_row(bd.board[13])}
 
         14 | {draw_board_row(bd.board[14])}
+
+        [Y]
     ''')
 
 
@@ -104,6 +109,17 @@ if __name__ == '__main__':
     key exit : polite
     '''
     try:
-        display_board()
+        bd = Board()e
+        display_board(bd)
+        make_move(bd, 1, 1, 1)
+        make_move(bd, 1, 2, 2)
+        make_move(bd, 1, 5, 5)
+        make_move(bd, 1, 4, 4)
+        while not bd.done:
+            xinput = int(input('X : '))
+            yinput = int(input('Y: '))
+            stone = int(input('stone: '))
+            bd.done = make_move(bd, stone, yinput, xinput)
+
     except KeyboardInterrupt:
         exit()
