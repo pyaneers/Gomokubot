@@ -1,7 +1,7 @@
 import sys
 import uuid
 from textwrap import dedent
-from gmk_board import Board
+from .gmk_board import Board
 
 # stone placement verification
 
