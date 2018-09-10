@@ -1,0 +1,6 @@
+{
+  "Gomokubot/routes.py": true,
+  "Gomokubot/tests.py": true,
+  "Gomokubot/views/default.py": true,
+  "Gomokubot/views/notfound.py": true
+}
