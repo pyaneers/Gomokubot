@@ -109,7 +109,7 @@ if __name__ == '__main__':
     key exit : polite
     '''
     try:
-        bd = Board()e
+        bd = Board()
         display_board(bd)
         make_move(bd, 1, 1, 1)
         make_move(bd, 1, 2, 2)
