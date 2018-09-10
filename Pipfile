@@ -5,9 +5,10 @@ name = "pypi"
 
 [packages]
 gomokubot = {editable = true, path = ".", extras = ["testing"]}
-"flake8" = "*"
+
 
 [dev-packages]
+"flake8" = "*"
 "autopep8" = "*"
 
 [requires]
