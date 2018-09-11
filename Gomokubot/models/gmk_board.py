@@ -39,17 +39,17 @@ class Board():
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ]
 
-    def __str__(self):
-        return(
-            f'game_id: {self.game_id} | '
-            f'done: {self.done} | moves: {self.moves}'
-            )
+    # def __str__(self):
+    #     return(
+    #         f'game_id: {self.game_id} | '
+    #         f'done: {self.done} | moves: {self.moves}'
+    #         )
 
-    def __repr__(self):
-        return(
-            f'<BOARD | game_id: {self.game_id} | '
-            f'done: {self.done} | moves: {self.moves}'
-            )
+    # def __repr__(self):
+    #     return(
+    #         f'<BOARD | game_id: {self.game_id} | '
+    #         f'done: {self.done} | moves: {self.moves}'
+    #         )
 
     def place_piece(self, stone, x=0, y=0):
         # move argument is derived from JSON response in the form of
