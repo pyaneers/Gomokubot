@@ -1,4 +1,8 @@
 {
+  "Gomokubot/models/CLI.py": true,
+  "Gomokubot/models/gmk_board.py": true,
+  "Gomokubot/models/p_bot.py": true,
+  "Gomokubot/models/p_hum.py": true,
   "Gomokubot/routes.py": true,
   "Gomokubot/tests.py": true,
   "Gomokubot/views/default.py": true,

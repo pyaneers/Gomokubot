@@ -9,7 +9,6 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
-    'cryptacular', # Custom
     'marshmallow_sqlalchemy',  # Custom
     'numpy',  # Custom
     'plaster_pastedeploy',
