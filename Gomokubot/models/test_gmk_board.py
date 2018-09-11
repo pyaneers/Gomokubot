@@ -12,9 +12,25 @@ def test_board_import():
     assert Board
 
 
-def test_board_import():
-    assert Board
+def test_board_instance():
+    assert fresh_game()
 
+
+def test_board_moves_list(fresh_game):
+    moves = fresh_game.moves
+    assert moves == []
+
+
+def test_place_piece(fresh_game):
+    fresh_game.stone = 1
+    fresh_game.place_piece(0, 0)
+    assert fresh_game.board[0][0] == fresh_game.stone
+
+
+def test_placeover_error(fresh_game):
+    fresh_game.stone = 1
+    fresh_game.place_piece(0, 0)
+    assert fresh_game.place_piece(0, 0) == IndexError
 
 
 # bd.stone = 1

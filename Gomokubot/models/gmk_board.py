@@ -1,3 +1,19 @@
+# from datetime import datetime as dt
+from sqlalchemy.exc import DBAPIError
+from sqlalchemy.orm import relationship
+from sqlalchemy import (
+    Boolean,
+    String,
+    Column,
+    Text,
+    # DateTime,
+    Integer,
+    # Index,
+    # ForeignKey,
+)
+from .meta import Base
+
+
 import uuid
 
 
@@ -208,3 +224,28 @@ class Board():
             return False
         print('_check_diagnal_RL_match')
         return True
+
+
+class DBBoard(Base):
+    __tablename__ = 'gameboards'
+    id = Column(Integer, primary_key=True)
+    uuid = Column(String(255), nullable=False)
+    gameboard = Column(Text)
+    finished = Column(Boolean)
+    gametype = Column(String(31))
+
+    @classmethod
+    def new(cls, request=None, **kwargs):
+        if request is None:
+            raise DBAPIError
+        board = cls(**kwargs)
+        request.dbsession.add(board)
+        # request.dbsession.u
+
+        return request.dbsession.query(cls).filter(
+            cls.uuid == kwargs['uuid']).one_or_none()
+
+    def update(stuff):
+        # takes in same param as new one,
+        # qrs the db, puts new stone,
+        # returns updated board

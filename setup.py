@@ -18,7 +18,7 @@ requires = [
     'pyramid_jwt',  # Custom
     'pyramid-restful-framework',  # Custom
     'pyramid_debugtoolbar',
-    'requests', # Custom
+    'requests',  # Custom
     'waitress',
 ]
 
