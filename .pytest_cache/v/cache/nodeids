@@ -1,7 +1,1 @@
-[
-  "Gomokubot/models/test_gmk_board.py::test_board_import",
-  "Gomokubot/models/test_gmk_board.py::test_board_instance",
-  "Gomokubot/models/test_gmk_board.py::test_board_moves_list",
-  "Gomokubot/models/test_gmk_board.py::test_place_piece",
-  "Gomokubot/models/test_gmk_board.py::test_placeover_error"
-]
+[]

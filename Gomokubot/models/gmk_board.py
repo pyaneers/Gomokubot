@@ -12,13 +12,28 @@ from sqlalchemy import (
     # ForeignKey,
 )
 from .meta import Base
-
+import json
 
 import uuid
 
-
 class Board():
-    def __init__(self):
+    def __init__(self, board=[
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]):
         """
         GMK board class.
         game id for each instance.
@@ -37,23 +52,7 @@ class Board():
         self.moves = []
 
         # 2D array. self.board[0][0] to self.board[14][14]
-        self.board = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ]
+        self.board = board
 
     def __str__(self):
         return(
@@ -236,16 +235,33 @@ class DBBoard(Base):
 
     @classmethod
     def new(cls, request=None, **kwargs):
+        """
+            Creates a new entry in our DB for this new game and board
+        """
         if request is None:
             raise DBAPIError
         board = cls(**kwargs)
         request.dbsession.add(board)
-        # request.dbsession.u
+        request.dbsession
 
         return request.dbsession.query(cls).filter(
             cls.uuid == kwargs['uuid']).one_or_none()
 
-    def update(stuff):
-        # takes in same param as new one,
-        # qrs the db, puts new stone,
-        # returns updated board
+    @classmethod
+    def update(cls, request=None, **kwargs):
+        """
+            Update a gameboard with new data. Note the incoming kwargs will need a JSON object called gameboard assigned to it.
+        """
+        if request is None:
+            raise DBAPIError
+        gb = kwargs['gameboard']
+        return request.dbsession.query(cls).filter(cls.uuid == kwargs['uuid']).one_or_none().update({'gameboard' : gb})
+
+    @classmethod
+    def retrieve(cls, request=None, **kwargs):
+        """
+            Get a specific gameboard
+        """
+        if request is None:
+            raise DBAPIError
+        return request.dbsession.query(cls).filter(cls.uuid == kwargs['uuid']).one_or_none()
