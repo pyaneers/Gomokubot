@@ -9,4 +9,4 @@ def includeme(config):
     config.add_route('home', '/')
 
     router = ViewSetRouter(config, trailing_slash=False)
-    router.register('api/v1/board/{uuid}', BoardAPIView, 'board')
+    router.register('api/v1/board', BoardAPIView, 'board')

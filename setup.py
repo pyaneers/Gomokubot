@@ -18,8 +18,14 @@ requires = [
     'pyramid_jwt',  # Custom
     'pyramid-restful-framework',  # Custom
     'pyramid_debugtoolbar',
+    'pyramid_tm',
+    'pyramid_retry',
+    'pyramid >= 1.9a',
+    'SQLAlchemy',
+    'transaction',
     'requests',  # Custom
     'waitress',
+    'zope.sqlalchemy',  # Custom
 ]
 
 tests_require = [

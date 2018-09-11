@@ -6,7 +6,7 @@ from sqlalchemy.exc import DBAPIError
 import requests
 import json
 from ..models.gmk_board import DBBoard
-from ..models.schema import DBBoardSchema
+from ..models.schemas import DBBoardSchema
 from uuid import uuid4
 
 
@@ -17,6 +17,7 @@ class BoardAPIView(APIViewSet):
         """ Create a new Gomoku Game
             POST api/v1/board/newgame
         """
+        import pdb; pdb.set_trace()
         try:
             kwargs = json.loads(request.body)
         except JSONDecodeError as e:
@@ -32,10 +33,11 @@ class BoardAPIView(APIViewSet):
         data = schema.dump(board).data
         return Response(json=data, status=201)
 
-    def update(self, request):
+    def update(self, request, id=None):
         """ Send a new move on a given game
             PUT api/v1/board/**kwargs
         """
+        import pdb; pdb.set_trace()
         try:
             kwargs = json.loads(request.body)
         except JSONDecodeError as e:
@@ -49,10 +51,11 @@ class BoardAPIView(APIViewSet):
         data = schema.dump(board).data
         return Response(json=data, status=200)
 
-    def retrieve(self, request):
+    def retrieve(self, request, id=None):
         """ Get one Gomoku Game with given id
             GET api/v1/board/**kwargs
         """
+        import pdb; pdb.set_trace()
         try:
             kwargs = json.loads(request.body)
         except JSONDecodeError as e:
@@ -71,6 +74,7 @@ class BoardAPIView(APIViewSet):
         """ List all current running games
             GET api/v1/board
         """
+        import pdb; pdb.set_trace()
         if request is None:
             return Response(json='Not Found', status=400)
 
