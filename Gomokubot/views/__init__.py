@@ -1,3 +1,3 @@
-from .bot import BotAPIView
+from .board import BoardAPIView
 
-__all__ = [BotAPIView]
+__all__ = [BoardAPIView]

@@ -1,5 +1,5 @@
 from pyramid_restful.routers import ViewSetRouter
-from .views import BotAPIView
+from .views import BoardAPIView
 
 
 def includeme(config):
@@ -9,5 +9,5 @@ def includeme(config):
     config.add_route('home', '/')
 
     router = ViewSetRouter(config, trailing_slash=False)
-    router.register('api/v1/bot', BotAPIView, 'bot')
+    router.register('api/v1/board', BoardAPIView, 'board')
 
