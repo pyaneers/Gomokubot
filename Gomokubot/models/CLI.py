@@ -1,12 +1,9 @@
 import sys
 import uuid
 from textwrap import dedent
-from .gmk_board import Board
+from gmk_board import Board
 
 # stone placement verification
-
-bd = Board()
-
 
 
 # bd.stone = 1
@@ -32,6 +29,13 @@ bd = Board()
 # bd.place_piece(7, 11)
 
 
+def make_move(bd, stone, y, x):
+    bd.place_piece(stone, y, x)
+    display_board(bd)
+    # import pdb; pdb.set_trace()
+    return bd._check_vertical_match(stone, y, x)
+
+
 def draw_board_row(line):
     """
     evaluates the board class and draws stone locations
@@ -48,7 +52,7 @@ def draw_board_row(line):
     return row
 
 
-def display_board():
+def display_board(bd):
     """
     board spaced for stone placement
     """
@@ -105,9 +109,17 @@ if __name__ == '__main__':
     key exit : polite
     '''
     try:
-        # bd._board_check(7, 11)
-        display_board()
-        bd._check_vertical_match(3, 11)
+        bd = Board()
+        display_board(bd)
+        make_move(bd, 1, 1, 1)
+        make_move(bd, 1, 2, 2)
+        make_move(bd, 1, 5, 5)
+        make_move(bd, 1, 4, 4)
+        while not bd.done:
+            xinput = int(input('X : '))
+            yinput = int(input('Y: '))
+            stone = int(input('stone: '))
+            bd.done = make_move(bd, stone, yinput, xinput)
 
     except KeyboardInterrupt:
         exit()
