@@ -15,7 +15,7 @@ class BoardAPIView(APIViewSet):
         """
         if not id:
             return Response(json='Update Game Not Found', status=404)
-        mssg = f'Fake sent a move to game'
+        mssg = 'Fake sent a move to game'
         return Response(json=mssg, status=200)
 
     def retrieve(self, request, id=None):
@@ -23,7 +23,7 @@ class BoardAPIView(APIViewSet):
         """
         if not id:
             return Response(json='Not Found', status=404)
-        mssg = f'Looking at game'
+        mssg = 'Looking at game'
         # if move:
         #     mssg += f' on move {move}'
 
