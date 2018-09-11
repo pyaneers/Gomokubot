@@ -34,7 +34,7 @@ except ModuleNotFoundError:
 
 def make_move(bd, stone, y, x):
     bd.place_piece(stone, y, x)
-    display_board(bd)
+    # display_board(bd)
     # import pdb; pdb.set_trace()
     return bd._check_vertical_match(stone, y, x)
 
@@ -55,45 +55,45 @@ def draw_board_row(line):
     return row
 
 
-def display_board(bd):
-    """
-    board spaced for stone placement
-    """
-    print(f'''
-             00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14  [X]
-             ----------------------------------------------------------
-        00 | {draw_board_row(bd.board[0])}
+# def display_board(bd):
+#     """
+#     board spaced for stone placement
+#     """
+#     print(f'''
+#              00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14  [X]
+#              ----------------------------------------------------------
+#         00 | {draw_board_row(bd.board[0])}
 
-        01 | {draw_board_row(bd.board[1])}
+#         01 | {draw_board_row(bd.board[1])}
 
-        02 | {draw_board_row(bd.board[2])}
+#         02 | {draw_board_row(bd.board[2])}
 
-        03 | {draw_board_row(bd.board[3])}
+#         03 | {draw_board_row(bd.board[3])}
 
-        04 | {draw_board_row(bd.board[4])}
+#         04 | {draw_board_row(bd.board[4])}
 
-        05 | {draw_board_row(bd.board[5])}
+#         05 | {draw_board_row(bd.board[5])}
 
-        06 | {draw_board_row(bd.board[6])}
+#         06 | {draw_board_row(bd.board[6])}
 
-        07 | {draw_board_row(bd.board[7])}
+#         07 | {draw_board_row(bd.board[7])}
 
-        08 | {draw_board_row(bd.board[8])}
+#         08 | {draw_board_row(bd.board[8])}
 
-        09 | {draw_board_row(bd.board[9])}
+#         09 | {draw_board_row(bd.board[9])}
 
-        10 | {draw_board_row(bd.board[10])}
+#         10 | {draw_board_row(bd.board[10])}
 
-        11 | {draw_board_row(bd.board[11])}
+#         11 | {draw_board_row(bd.board[11])}
 
-        12 | {draw_board_row(bd.board[12])}
+#         12 | {draw_board_row(bd.board[12])}
 
-        13 | {draw_board_row(bd.board[13])}
+#         13 | {draw_board_row(bd.board[13])}
 
-        14 | {draw_board_row(bd.board[14])}
+#         14 | {draw_board_row(bd.board[14])}
 
-        [Y]
-    ''')
+#         [Y]
+#     ''')
 
 
 def exit():
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     '''
     try:
         bd = Board()
-        display_board(bd)
+        # display_board(bd)
         make_move(bd, 1, 1, 1)
         make_move(bd, 1, 2, 2)
         make_move(bd, 1, 5, 5)
