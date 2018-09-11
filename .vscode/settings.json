@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/usr/bin/python3.7",
+    "python.pythonPath": "/home/alex/.local/share/virtualenvs/Gomokubot-CsNevsyl/bin/python",
     "python.unitTest.promptToConfigure": false,
     "python.unitTest.pyTestEnabled": false,
     "python.unitTest.unittestEnabled": false,

@@ -9,7 +9,7 @@ import zope.sqlalchemy
 # This is just for reference
 # from .mymodel import MyModel  # flake8: noqa
 # from .weather_locaion import WeatherLocation
-from gmk_board import Board
+from .gmk_board import DBBoard
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup
@@ -50,7 +50,7 @@ def get_tm_session(session_factory, transaction_manager):
 def includeme(config):
     """
     Initialize the model for a Pyramid app.
-    Activate this setup using ``config.include('stocks_api.models')``.
+    Activate this setup using ``config.include('gomokubot.models')``.
     """
     settings = config.get_settings()
     settings['tm.manager_hook'] = 'pyramid_tm.explicit_manager'
