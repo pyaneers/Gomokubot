@@ -96,7 +96,7 @@ class BoardAPIView(APIViewSet):
         """ List all current running games
             GET api/v1/board
         """
-        import pdb; pdb.set_trace()
+
         if request is None:
             return Response(json='Not Found', status=400)
 

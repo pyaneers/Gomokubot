@@ -59,41 +59,41 @@ def display_board(bd):
     """
     board spaced for stone placement
     """
-    print(f'''
-             00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14  [X]
-             ----------------------------------------------------------
-        00 | {draw_board_row(bd.board[0])}
-
-        01 | {draw_board_row(bd.board[1])}
-
-        02 | {draw_board_row(bd.board[2])}
-
-        03 | {draw_board_row(bd.board[3])}
-
-        04 | {draw_board_row(bd.board[4])}
-
-        05 | {draw_board_row(bd.board[5])}
-
-        06 | {draw_board_row(bd.board[6])}
-
-        07 | {draw_board_row(bd.board[7])}
-
-        08 | {draw_board_row(bd.board[8])}
-
-        09 | {draw_board_row(bd.board[9])}
-
-        10 | {draw_board_row(bd.board[10])}
-
-        11 | {draw_board_row(bd.board[11])}
-
-        12 | {draw_board_row(bd.board[12])}
-
-        13 | {draw_board_row(bd.board[13])}
-
-        14 | {draw_board_row(bd.board[14])}
-
-        [Y]
-    ''')
+#    print(f'''
+#             00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14  [X]
+#             ----------------------------------------------------------
+#        00 | {draw_board_row(bd.board[0])}
+#
+#        01 | {draw_board_row(bd.board[1])}
+#
+ #       02 | {draw_board_row(bd.board[2])}
+#
+ #       03 | {draw_board_row(bd.board[3])}
+#
+ #       04 | {draw_board_row(bd.board[4])}
+#
+ #       05 | {draw_board_row(bd.board[5])}
+#
+ #       06 | {draw_board_row(bd.board[6])}
+##
+  #      07 | {draw_board_row(bd.board[7])}
+#
+ #       08 | {draw_board_row(bd.board[8])}
+#
+ #       09 | {draw_board_row(bd.board[9])}
+#
+ #       10 | {draw_board_row(bd.board[10])}
+#
+ #       11 | {draw_board_row(bd.board[11])}
+#
+ #       12 | {draw_board_row(bd.board[12])}
+#
+ #       13 | {draw_board_row(bd.board[13])}
+#
+ #       14 | {draw_board_row(bd.board[14])}
+#
+ #       [Y]
+  #  ''')
 
 
 def exit():

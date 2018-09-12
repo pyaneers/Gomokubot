@@ -64,18 +64,6 @@ class Board():
         # 2D array. self.board[0][0] to self.board[14][14]
         self.board = board
 
-    def __str__(self):
-        return(
-            f'game_id: {self.game_id} | '
-            f'done: {self.done} | moves: {self.moves}'
-            )
-
-    def __repr__(self):
-        return(
-            f'<BOARD | game_id: {self.game_id} | '
-            f'done: {self.done} | moves: {self.moves}'
-            )
-
     def place_piece(self, stone, x=0, y=0):
         # move argument is derived from JSON response in the form of
         # (X,Y) X: OVER | Y: DOWN
