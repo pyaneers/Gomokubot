@@ -1,39 +1,11 @@
 import sys
 import uuid
 from textwrap import dedent
+from random import randrange
 from gmk_board import Board
 
-# stone placement verification
 
-
-# bd.stone = 1
-
-
-# bd.place_piece(7, 7)
-# bd.place_piece(6, 8)
-# bd.place_piece(5, 9)
-# bd.place_piece(4, 10)
-# bd.place_piece(3, 11)
-
-# bd.place_piece(7, 7)
-# bd.place_piece(6, 8)
-# bd.place_piece(5, 9)
-# bd.place_piece(4, 10)
-# bd.place_piece(3, 11)
-
-
-# bd.place_piece(7, 7)
-# bd.place_piece(7, 8)
-# bd.place_piece(7, 9)
-# bd.place_piece(7, 10)
-# bd.place_piece(7, 11)
-
-
-def make_move(bd, stone, y, x):
-    bd.place_piece(stone, y, x)
-    display_board(bd)
-    # import pdb; pdb.set_trace()
-    return bd._check_vertical_match(stone, y, x)
+bd = Board()
 
 
 def draw_board_row(line):
@@ -53,6 +25,7 @@ def draw_board_row(line):
 
 
 def display_board(bd):
+    global bd
     """
     board spaced for stone placement
     """
@@ -103,23 +76,64 @@ def exit():
     sys.exit()
 
 
+def make_move(bd, stone, y, x):
+    global bd
+    bd.place_piece(stone, y, x)
+    display_board(bd)
+    # import pdb; pdb.set_trace()
+    return bd._check_vertical_match(stone, y, x)
+
+
+def turn_cycle():
+    global bd
+    while not bd.done:
+        xinput = int(input('X : '))
+        yinput = int(input('Y: '))
+        bd.done = make_move(bd, stone, yinput, xinput)
+
+
+def turn_flip_and_cycle():
+    global bd
+
+    # decide stone
+    num = randrange(0, 10)
+    if num % 2 == 0:
+        # X/black chosen, CLI goes first
+        CLI_stone = bd.p1_stone
+        # cpu gets O
+        CPU_stone = bd.p2_stone
+        print('You move first!')
+
+        while not bd.done:
+            xinput = int(input('X : '))
+            yinput = int(input('Y: '))
+            bd.done = make_move(bd, stone, yinput, xinput)
+
+    else:
+        # O/white chosen, CLI goes second
+        CLI_stone = bd.p2_stone
+        # cpu gets X
+        CPU_stone = bd.p1_stone
+        print('Opponent moves first!')
+
+        while not bd.done:
+            xinput = int(input('X : '))
+            yinput = int(input('Y: '))
+            bd.done = make_move(bd, stone, yinput, xinput)
+
+
+def core():
+    display_board(bd)
+    turn_flip_and_cycle()
+
+
 if __name__ == '__main__':
     '''
     run : core
     key exit : polite
     '''
     try:
-        bd = Board()
-        display_board(bd)
-        make_move(bd, 1, 1, 1)
-        make_move(bd, 1, 2, 2)
-        make_move(bd, 1, 5, 5)
-        make_move(bd, 1, 4, 4)
-        while not bd.done:
-            xinput = int(input('X : '))
-            yinput = int(input('Y: '))
-            stone = int(input('stone: '))
-            bd.done = make_move(bd, stone, yinput, xinput)
+        core()
 
     except KeyboardInterrupt:
         exit()

@@ -17,6 +17,7 @@ import json
 
 import uuid
 
+
 class Board():
     def __init__(self, board=[
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -49,6 +50,9 @@ class Board():
         # is then turned True and turned into other player.
         self.done = False
 
+        self.p1_stone = 'X'
+        self.p2_stone = 'O'
+
         # Each move made is appended to list as made.
         self.moves = []
 
@@ -67,7 +71,7 @@ class Board():
             f'done: {self.done} | moves: {self.moves}'
             )
 
-    def auto_move_O(self):
+    def auto_move(self, stone):
         """
         IN: Board.board
         OUT: self.place_piece(x, y)
@@ -78,22 +82,7 @@ class Board():
             y = int(randrange(0, 15))
             if self.board[x][y] == 0:
                 deciding = False
-                self.place_piece(x, y)
-            else:
-                pass
-
-    def auto_move_X(self):
-        """
-        IN: Board.board
-        OUT: self.place_piece(x, y)
-        """
-        deciding = True
-        while deciding:
-            x = int(randrange(0, 15))
-            y = int(randrange(0, 15))
-            if self.board[x][y] == 0:
-                deciding = False
-                self.place_piece(x, y)
+                self.place_piece(stone, x, y)
             else:
                 pass
 
@@ -104,7 +93,6 @@ class Board():
             self.board[x][y] = stone
             # after placement, call the Fx that initiates the
             # sending of me move made to the waiting player.
-
         else:
             print('coordinate marked; illegal move')
             return IndexError
