@@ -4,8 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-gomokubot = {editable = true, path = ".", extras = ["testing"]}
-
+gomokubot = {editable = true, path = "."}
 
 [dev-packages]
 "flake8" = "*"
