@@ -2,6 +2,7 @@
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import relationship
 import transaction
+from random import randrange
 from sqlalchemy import (
     Boolean,
     String,
@@ -76,6 +77,36 @@ class Board():
             f'done: {self.done} | moves: {self.moves}'
             )
 
+    def auto_move_O(self):
+        """
+        IN: Board.board
+        OUT: self.place_piece(x, y)
+        """
+        deciding = True
+        while deciding:
+            x = int(randrange(0, 15))
+            y = int(randrange(0, 15))
+            if self.board[x][y] == 0:
+                deciding = False
+                self.place_piece(x, y)
+            else:
+                pass
+
+    def auto_move_X(self):
+        """
+        IN: Board.board
+        OUT: self.place_piece(x, y)
+        """
+        deciding = True
+        while deciding:
+            x = int(randrange(0, 15))
+            y = int(randrange(0, 15))
+            if self.board[x][y] == 0:
+                deciding = False
+                self.place_piece(x, y)
+            else:
+                pass
+
     def place_piece(self, stone, x=0, y=0):
         # move argument is derived from JSON response in the form of
         # (X,Y) X: OVER | Y: DOWN
@@ -88,8 +119,10 @@ class Board():
             print('coordinate marked; illegal move')
             return IndexError
 
-    def check_vertical_match(self, stone, y, x):
-        """ Validates the upper and lower stones of given coordinate, validates if connected 5
+    def _check_vertical_match(self, stone, y, x):
+        """
+        Validates the upper and lower stones of given coordinate,
+        validates if connected 5
         """
         counter = 0
         check_up = False
