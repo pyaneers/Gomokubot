@@ -273,7 +273,7 @@ class DBBoard(Base):
         done = newupdate['finished']
         data = {'gameboard': gb, 'finished': done}
 
-        config_uri = 'development.ini'
+        config_uri = 'production.ini'
         options = parse_vars([])
         setup_logging(config_uri)
         settings = get_appsettings(config_uri, options=options)

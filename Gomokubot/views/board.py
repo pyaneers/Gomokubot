@@ -35,7 +35,7 @@ class BoardAPIView(APIViewSet):
             PUT api/v1/board/#
         """
         try:
-            kwargs = json.loads(request.body)
+            kwargs = json.loads(request.body.decode())
             xaxis = int(kwargs['X'])
             yaxis = int(kwargs['Y'])
         except JSONDecodeError as e:
