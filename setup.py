@@ -20,7 +20,6 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_tm',
     'pyramid_retry',
-    'pyramid >= 1.9a',
     'SQLAlchemy',
     'transaction',
     'requests',  # Custom
@@ -59,6 +58,9 @@ setup(
     entry_points={
         'paste.app_factory': [
             'main = Gomokubot:main',
+        ],
+        'console_scripts': [
+            'initialize_gomoku_db = Gomokubot.scripts.initializedb:main',
         ],
     },
 )

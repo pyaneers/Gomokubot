@@ -1,20 +1,26 @@
 # from datetime import datetime as dt
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import relationship
+import transaction
 from sqlalchemy import (
     Boolean,
     String,
     Column,
     Text,
-    # DateTime,
     Integer,
+    JSON,
     # Index,
     # ForeignKey,
 )
+# from . import (
+#     get_engine,
+#     get_session_factory,
+#     get_tm_session,
+# )
 from .meta import Base
 import json
+from uuid import uuid4
 
-import uuid
 
 class Board():
     def __init__(self, board=[
@@ -39,17 +45,11 @@ class Board():
         game id for each instance.
         moves in order by play
         """
-        self.game_id = uuid.uuid4().hex
-
-        # match is CC, CP, or PP
-        self.match = []
+        # self.game_id = str(uuid4())
 
         # remains False until the board is read with victory conditions,
         # is then turned True and turned into other player.
         self.done = False
-
-        # Each move made is appended to list as made.
-        self.moves = []
 
         # 2D array. self.board[0][0] to self.board[14][14]
         self.board = board
@@ -78,7 +78,7 @@ class Board():
             print('coordinate marked; illegal move')
             return IndexError
 
-    def _check_vertical_match(self, stone, y, x):
+    def check_vertical_match(self, stone, y, x):
         """ Validates the upper and lower stones of given coordinate, validates if connected 5
         """
         counter = 0
@@ -229,8 +229,24 @@ class DBBoard(Base):
     __tablename__ = 'gameboards'
     id = Column(Integer, primary_key=True)
     uuid = Column(String(255), nullable=False)
-    gameboard = Column(Text)
-    finished = Column(Boolean)
+    gameboard = Column(JSON, default=[
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ])
+    finished = Column(Boolean, nullable=False, default=False)
     gametype = Column(String(31))
 
     @classmethod
@@ -248,14 +264,39 @@ class DBBoard(Base):
             cls.uuid == kwargs['uuid']).one_or_none()
 
     @classmethod
-    def update(cls, request=None, **kwargs):
+    def update(cls, newupdate, request=None):
         """
             Update a gameboard with new data. Note the incoming kwargs will need a JSON object called gameboard assigned to it.
         """
         if request is None:
             raise DBAPIError
-        gb = kwargs['gameboard']
-        return request.dbsession.query(cls).filter(cls.uuid == kwargs['uuid']).one_or_none().update({'gameboard' : gb})
+        gb = newupdate['gameboard']
+        done = newupdate['finished']
+        # data = {'gameboard': gb, 'finished': done}
+        # import pdb; pdb.set_trace()
+        # config_uri = argv[1]
+        # options = parse_vars(argv[2:])
+        # setup_logging(config_uri)
+        # settings = get_appsettings(config_uri, options=options)
+
+        # engine = get_engine(settings)
+
+        # Base.metadata.create_all(engine)
+
+        # session_factory = get_session_factory(engine)
+
+        # with transaction.manager:
+        #     dbsession = get_tm_session(session_factory, transaction.manager)
+
+        #     # dbsession.add(model)
+
+        game = request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).first()
+        game.gameboard = newupdate['gameboard']
+        request.dbsession.add(game)
+        request.dbsession.flush()
+        # dbsession.commit()
+        # test = request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).one_or_none()
+        return request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).one_or_none()
 
     @classmethod
     def retrieve(cls, request=None, **kwargs):
@@ -265,3 +306,12 @@ class DBBoard(Base):
         if request is None:
             raise DBAPIError
         return request.dbsession.query(cls).filter(cls.uuid == kwargs['uuid']).one_or_none()
+
+    @classmethod
+    def all(cls, request):
+        """ return all of gameboard data
+        """
+        if request.dbsession is None:
+            raise DBAPIError
+
+        return request.dbsession.query(cls).all()

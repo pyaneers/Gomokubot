@@ -9,13 +9,13 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-from ..models.meta import Base
+# from ..models.meta import Base
 from ..models import (
     get_engine,
     get_session_factory,
     get_tm_session,
     )
-from ..models import DBBoard
+from ..models import DBBoard, Base
 
 
 def usage(argv):
@@ -40,7 +40,10 @@ def main(argv=sys.argv):
     Base.metadata.create_all(engine)
 
     # Below is used for seeding the DB
-    session_factory = get_session_factory(engine)
+    # session_factory = get_session_factory(engine)
 
     # with transaction.manager:
     #     dbsession = get_tm_session(session_factory, transaction.manager)
+
+    #     model = DBBoard(uuid='test')
+    #     dbsession.add(model)
