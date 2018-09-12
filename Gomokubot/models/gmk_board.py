@@ -12,11 +12,21 @@ from sqlalchemy import (
     # Index,
     # ForeignKey,
 )
+from sqlalchemy import engine_from_config
+from sqlalchemy.orm import sessionmaker
+import zope.sqlalchemy
 # from . import (
 #     get_engine,
 #     get_session_factory,
 #     get_tm_session,
 # )
+from pyramid.paster import (
+    get_appsettings,
+    setup_logging,
+)
+
+from pyramid.scripts.common import parse_vars
+
 from .meta import Base
 import json
 from uuid import uuid4
@@ -229,6 +239,7 @@ class DBBoard(Base):
     __tablename__ = 'gameboards'
     id = Column(Integer, primary_key=True)
     uuid = Column(String(255), nullable=False)
+    status = Column(String(16))
     gameboard = Column(JSON, default=[
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -272,30 +283,28 @@ class DBBoard(Base):
             raise DBAPIError
         gb = newupdate['gameboard']
         done = newupdate['finished']
-        # data = {'gameboard': gb, 'finished': done}
-        # import pdb; pdb.set_trace()
-        # config_uri = argv[1]
-        # options = parse_vars(argv[2:])
-        # setup_logging(config_uri)
-        # settings = get_appsettings(config_uri, options=options)
+        data = {'gameboard': gb, 'finished': done}
 
-        # engine = get_engine(settings)
+        config_uri = 'development.ini'
+        options = parse_vars([])
+        setup_logging(config_uri)
+        settings = get_appsettings(config_uri, options=options)
 
-        # Base.metadata.create_all(engine)
+        engine = engine_from_config(settings, 'sqlalchemy.')
 
-        # session_factory = get_session_factory(engine)
+        Base.metadata.create_all(engine)
 
-        # with transaction.manager:
-        #     dbsession = get_tm_session(session_factory, transaction.manager)
+        factory = sessionmaker()
+        factory.configure(bind=engine)
+        session_factory = factory
 
-        #     # dbsession.add(model)
+        with transaction.manager:
+            dbsession = session_factory()
+            zope.sqlalchemy.register(dbsession, transaction_manager=transaction.manager)
+            game = dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).first()
+            game.gameboard = newupdate['gameboard']
+            dbsession.flush()
 
-        game = request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).first()
-        game.gameboard = newupdate['gameboard']
-        request.dbsession.add(game)
-        request.dbsession.flush()
-        # dbsession.commit()
-        # test = request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).one_or_none()
         return request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).one_or_none()
 
     @classmethod
