@@ -178,6 +178,7 @@ class Board():
 
     def _check_dignal_LR_match(self, stone, y, x):
         """
+        Validates the diagonal matches from lowerleft to upperight
         """
         # import pdb; pdb.set_trace()
         counter = 0
@@ -217,6 +218,7 @@ class Board():
 
     def _check_diagnal_RL_match(self, stone, y, x):
         """
+            Validates the diagonal matches from lower right to upper left
         """
         counter = 0
         check_lowerleft = False

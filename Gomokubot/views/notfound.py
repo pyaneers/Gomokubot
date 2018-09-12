@@ -4,6 +4,9 @@ from pyramid.view import notfound_view_config
 
 @notfound_view_config(renderer='json')
 def notfound_view(request):
+    """
+        This is the view for if a route is not found on our site.
+    """
     request.response.status = 404
     # mssg = 'Not Found'
     # mssg += request.json

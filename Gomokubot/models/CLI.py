@@ -33,6 +33,11 @@ except ModuleNotFoundError:
 
 
 def make_move(bd, stone, y, x):
+    """
+        Make Move on a board
+        Input is a gameboard(2D List), stone(a character), and y and x(integers)
+        Output is a Boolean
+    """
     bd.place_piece(stone, y, x)
     display_board(bd)
     # import pdb; pdb.set_trace()
