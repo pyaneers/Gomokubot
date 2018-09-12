@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/Users/jongjinbaik/.local/share/virtualenvs/Gomokubot-23bLQ8cc/bin/python",
+    "python.pythonPath": "/usr/bin/python3.7",
     "python.unitTest.promptToConfigure": false,
     "python.unitTest.pyTestEnabled": false,
     "python.unitTest.unittestEnabled": false,

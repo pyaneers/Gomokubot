@@ -1,42 +1,21 @@
 import sys
 import uuid
+import json
 from textwrap import dedent
+
 try:
     from .gmk_board import Board
 except ModuleNotFoundError:
     from gmk_board import Board
 
-# stone placement verification
+from random import randrange
 
-
-# bd.stone = 1
-
-
-# bd.place_piece(7, 7)
-# bd.place_piece(6, 8)
-# bd.place_piece(5, 9)
-# bd.place_piece(4, 10)
-# bd.place_piece(3, 11)
-
-# bd.place_piece(7, 7)
-# bd.place_piece(6, 8)
-# bd.place_piece(5, 9)
-# bd.place_piece(4, 10)
-# bd.place_piece(3, 11)
-
-
-# bd.place_piece(7, 7)
-# bd.place_piece(7, 8)
-# bd.place_piece(7, 9)
-# bd.place_piece(7, 10)
-# bd.place_piece(7, 11)
-
-
-def make_move(bd, stone, y, x):
-    bd.place_piece(stone, y, x)
-    display_board(bd)
-    # import pdb; pdb.set_trace()
-    return bd._check_vertical_match(stone, y, x)
+# call the api with a post, api instantiates game with uuid
+# url = 'localhost:6543/api/v1/board'
+import pdb; pdb.set_trace()
+url = 'http://ec2-18-223-100-124.us-east-2.compute.amazonaws.com/api/v1/board'
+response = request.post(url)
+bd = json.loads(response.body)
 
 
 def draw_board_row(line):
@@ -56,6 +35,7 @@ def draw_board_row(line):
 
 
 def display_board(bd):
+    global bd
     """
     board spaced for stone placement
     """
@@ -106,23 +86,99 @@ def exit():
     sys.exit()
 
 
+# DEPRIC
+# def turn_cycle():
+#     global bd
+#     while not bd.done:
+#         xinput = int(input('X : '))
+#         yinput = int(input('Y: '))
+#         bd.done = make_move(bd, stone, yinput, xinput)
+
+
+#     # if bd._check_vertical_match(stone, y, x):
+
+#     return bd._check_vertical_match(stone, y, x)
+#     # TODO: this check needs to be tied to the game cycle on the ''front end''
+
+coin = True
+
+
+def flip():
+    global coin
+    num = randrange(0, 10)
+    if num % 2 == 0:
+        coin = True
+    else:
+        coin = False
+
+
+def turn_cycle():
+    global bd
+    global coin
+
+    # decide stone
+
+    if coin:
+        # X/black chosen, CLI goes first
+        CLI_stone = bd.p1_stone
+        # cpu gets O
+        CPU_stone = bd.p2_stone
+        print('Your move!')
+
+        while not bd.done:
+            xinput = int(input('X : '))
+            yinput = int(input('Y: '))
+
+            legal_move = bd.place_piece(bd, CLI_stone, yinput, xinput)
+            if legal_move:
+                display_board(bd)
+                bd.check_vertical_match(CLI_stone, yinput, xinput)
+                # send api w. put move made
+
+            else:
+                print('coordinate marked; illegal move')
+                pass
+
+    if not coin:
+        pass
+        # # O/white chosen, CLI goes second
+        # CLI_stone = bd.p2_stone
+        # # cpu gets X
+        # CPU_stone = bd.p1_stone
+        # print('Opponent move!')
+
+        # while not bd.done:
+
+        #     bd.auto_move(CPU_stone)
+        #     display_board(bd)
+        #     bd.check_vertical_match()
+
+        #     xinput = int(input('X : '))
+        #     yinput = int(input('Y: '))
+        #     legal_move = bd.place_piece(bd, CLI_stone, yinput, xinput)
+        #     if legal_move:
+        #         display_board(bd)
+        #         bd.check_vertical_match(CLI_stone, yinput, xinput)
+
+
+        #     else:
+        #         print('coordinate marked; illegal move')
+        #         pass
+
+def core():
+
+    display_board(bd)
+    flip()
+    turn_cycle()
+
+
 if __name__ == '__main__':
     '''
     run : core
     key exit : polite
     '''
     try:
-        bd = Board()
-        display_board(bd)
-        make_move(bd, 1, 1, 1)
-        make_move(bd, 1, 2, 2)
-        make_move(bd, 1, 5, 5)
-        make_move(bd, 1, 4, 4)
-        while not bd.done:
-            xinput = int(input('X : '))
-            yinput = int(input('Y: '))
-            stone = int(input('stone: '))
-            bd.done = make_move(bd, stone, yinput, xinput)
+        core()
 
     except KeyboardInterrupt:
         exit()
