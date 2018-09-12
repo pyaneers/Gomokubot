@@ -1,9 +1,11 @@
 from random import randrange
 class RandomAI():
+    """
+        This is a very basic AI that randomly places down stone and hopes to win the game Gomoku.
+    """
 
     def __init__(self, stone=2):
         self.stone = stone
-        pass
 
     def make_move(self, board: list):
         """
