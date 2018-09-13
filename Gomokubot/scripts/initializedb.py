@@ -1,15 +1,11 @@
 import os
 import sys
 import transaction
-
 from pyramid.paster import (
     get_appsettings,
     setup_logging,
     )
-
 from pyramid.scripts.common import parse_vars
-
-# from ..models.meta import Base
 from ..models import (
     get_engine,
     get_session_factory,
@@ -26,7 +22,6 @@ def usage(argv):
 
 
 def main(argv=sys.argv):
-    # import pdb; pdb.set_trace()
     if len(argv) < 2:
         usage(argv)
     config_uri = argv[1]
@@ -39,12 +34,3 @@ def main(argv=sys.argv):
 
     # Creates the tables for our models in the DB
     Base.metadata.create_all(engine)
-
-    # Below is used for seeding the DB
-    # session_factory = get_session_factory(engine)
-
-    # with transaction.manager:
-    #     dbsession = get_tm_session(session_factory, transaction.manager)
-
-    #     model = DBBoard(uuid='test')
-    #     dbsession.add(model)

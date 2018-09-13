@@ -46,31 +46,11 @@ class Board:
         game id for each instance.
         moves in order by play
         """
-        # self.game_id = str(uuid4())
-
-        # remains False until the board is read with victory conditions,
-        # is then turned True and turned into other player.
         self.done = False
-
         self.p1_stone = '1'
         self.p2_stone = '2'
-
         self.finished = False
-
-        # 2D array. self.board[0][0] to self.board[14][14]
         self.board = board
-
-    def __str__(self):
-        return(
-            f'game_id: {self.game_id} | '
-            f'done: {self.done} | moves: {self.moves}'
-            )
-
-    def __repr__(self):
-        return(
-            f'<BOARD | game_id: {self.game_id} | '
-            f'done: {self.done} | moves: {self.moves}'
-            )
 
     def auto_move(self, stone):
         """
@@ -94,9 +74,7 @@ class Board:
         else:
             return False
 
-
     def check_vertical_match(self, stone, y, x):
-
         """
         Validates the upper and lower stones of given coordinate,
         validates if connected 5
@@ -158,7 +136,6 @@ class Board:
             break
 
         if counter <= 4:
-            # import pdb; pdb.set_trace()
             return self._check_dignal_LR_match(stone, y, x)
         print('_check_horizontal_match')
         return True
@@ -166,13 +143,11 @@ class Board:
     def _check_dignal_LR_match(self, stone, y, x):
         """
         """
-        # import pdb; pdb.set_trace()
         counter = 0
         check_lowerleft = False
         check_upperright = False
 
         while check_lowerleft is False:
-            # import pdb; pdb.set_trace()
             for i in range(6):
                 try:
                     if self.board[y - i][x - i] is stone:
@@ -226,7 +201,6 @@ class Board:
 
         while check_upperright is False:
             for e in range(1, 5):
-                # import pdb; pdb.set_trace()
                 try:
                     if e > x:
                         check_upperright = True
@@ -306,7 +280,7 @@ class DBBoard(Base):
 
         Base.metadata.create_all(engine)
 
-        factory = sessionmaker()
+        factory = sessionmaker(expire_on_commit=True)
         factory.configure(bind=engine)
         session_factory = factory
 
@@ -316,6 +290,9 @@ class DBBoard(Base):
             game = dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).first()
             game.gameboard = newupdate['gameboard']
             dbsession.flush()
+
+        dbsession.close()
+        engine.dispose()
 
         return request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).one_or_none()
 
