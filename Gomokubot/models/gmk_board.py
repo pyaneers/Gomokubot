@@ -316,6 +316,7 @@ class DBBoard(Base):
             game = dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).first()
             game.gameboard = newupdate['gameboard']
             dbsession.flush()
+        engine.dispose()
 
         return request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).one_or_none()
 
