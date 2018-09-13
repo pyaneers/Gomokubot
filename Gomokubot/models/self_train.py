@@ -11,6 +11,21 @@ class Game:
         self.uuid = ''
         self.board = []
 
+    def auto_move(self, stone):
+        """
+        IN: Board.board
+        OUT: self.place_piece(x, y)
+        """
+        deciding = True
+        while deciding:
+            x = int(randrange(0, 15))
+            y = int(randrange(0, 15))
+
+            if self.board[y][x] == 0:
+                self.board[y][x] = stone
+                deciding = False
+                return(y, x)
+
     def place_piece(self, stone, x=0, y=0):
         if self.board[x][y] == 0:
             self.board[x][y] = stone  # being 1 or 2
@@ -168,15 +183,6 @@ class Game:
         return True
 
 
-def play_again():
-    print('Would you like to play again? y/n')
-    userinput = input()
-    if userinput is 'y':
-        return False
-    else:
-        return True
-
-
 def draw_board_row(line):
     """
     evaluates the board class and draws stone locations
@@ -255,12 +261,10 @@ def flip():
         return 2
 
 
-def validate_opponent(bd, response):
-    # import pdb; pdb.set_trace()
+def validate_server_player(bd, response):
     data = json.loads(response)
-    # import pdb; pdb.set_trace()
     if data['finished']:
-        print('Computer WIN, you loose')
+        print('Server WIN, ML loose')
         return True
     yaxis = data['Y']
     xaxis = data['X']
@@ -284,27 +288,19 @@ def send_json(bd, xaxis, yaxis):
     return requests.put(url, data=send_info)
 
 
-def validate_usermove(bd, xaxis, yaxis):
+def validate_ai_move(bd, xaxis, yaxis):
     current_game = Game()
     current_game.board = bd['gameboard']
     return current_game.check_vertical_match(bd['stone'], yaxis, xaxis)
 
 
-def userplay(bd):
+def ai_play(bd):
     """ Submit user coordinate and validates it
     """
     while True:
-        print('Your move!')
-        xinput = int(input('X : '))
-        yinput = int(input('Y: '))
         current_game = Game()
         current_game.board = bd['gameboard']
-        legal_move = current_game.place_piece(bd['stone'], yinput, xinput)
-        cls()
-        if legal_move:
-            return (xinput, yinput)
-        display_board(bd)
-        print('coordinate marked; illegal move')
+        return current_game.auto_move(bd['stone'])
 
 
 def new_game():
@@ -319,43 +315,35 @@ def new_game():
     response = requests.post(url)
     if response.status_code == 201:
         bd = json.loads(response.text)
+        print('New Game')
         return bd
     else:
         print(response.json)
 
 
-def cls():
-    """ clears Console during gameplay
-    """
-    os.system('cls' if os.name=='nt' else 'clear')
-
-
 def play_game():
     session = True
     while session:
+        # import pdb; pdb.set_trace()
         bd = new_game()
         bd['stone'] = flip()
         single_game = True
 
         while single_game:
-            display_board(bd)
-            xaxis, yaxis = userplay(bd)
-            if validate_usermove(bd, xaxis, yaxis):
-                display_board(bd)
-                print('You WIN!!!!')
+            yaxis, xaxis = ai_play(bd)
+            if validate_ai_move(bd, xaxis, yaxis):
+                print('ML WIN!!!!')
                 single_game = False
+                display_board(bd)
             else:
                 response = send_json(bd, xaxis, yaxis)
-                # import pdb; pdb.set_trace()
                 if response.status_code != 200:
                     print('API update error')
+                    single_game = False
                 else:
-                    if validate_opponent(bd, response.text):
+                    if validate_server_player(bd, response.text):
+                        display_board(bd)
                         single_game = False
-
-        exit_session = play_again()
-        if exit_session:
-            session = False
 
 
 if __name__ == '__main__':
