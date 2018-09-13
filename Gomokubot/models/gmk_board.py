@@ -252,7 +252,7 @@ class DBBoard(Base):
         data = {'gameboard': gb, 'finished': done}
 
         # Due to commit failed to work, following code were copied and pasted to load transaction manager
-        config_uri = 'development.ini'
+        config_uri = 'production.ini'
         options = parse_vars([])
         setup_logging(config_uri)
         settings = get_appsettings(config_uri, options=options)
