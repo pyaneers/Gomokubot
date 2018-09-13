@@ -26,6 +26,7 @@ def usage(argv):
 
 
 def main(argv=sys.argv):
+    # import pdb; pdb.set_trace()
     if len(argv) < 2:
         usage(argv)
     config_uri = argv[1]

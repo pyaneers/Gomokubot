@@ -17,7 +17,7 @@ class BoardAPIView(APIViewSet):
         """ Create a new Gomoku Game
             POST api/v1/board
         """
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         kwargs = {}
         try:
             kwargs['uuid'] = str(uuid4())
@@ -40,7 +40,6 @@ class BoardAPIView(APIViewSet):
             yaxis = int(kwargs['Y'])
         except JSONDecodeError as e:
             return Response(json=e.msg, status=400)
-        # import pdb; pdb.set_trace()
         try:
             currentgame = DBBoard.retrieve(request=request, **kwargs)
         except (DataError, AttributeError):
@@ -57,23 +56,28 @@ class BoardAPIView(APIViewSet):
         currentgame.finished = basegame.check_vertical_match(player_stone, yaxis, xaxis)
 
         update_db = {'uuid': currentgame.uuid, 'gameboard': currentgame.gameboard, 'finished': currentgame.finished}
-        # updatejson = json.dumps(update_db)
-        # import pdb; pdb.set_trace()
+
         try:
-            # currentgame.update(update_db, request)
             board = DBBoard.update(update_db, request)
         except (DataError, AttributeError):
             return Response(json='Invalid Information', status=400)
 
+        transfer_data = DBBoard()
+        transfer_data.finished = currentgame.finished
+        if currentgame.finished:
+            transfer_data.status = 'Win'
+
+        transfer_data.uuid = board.uuid
+        transfer_data.gametype = board.gametype
+
         schema = DBBoardSchema()
-        data = schema.dump(board).data
+        data = schema.dump(transfer_data).data
         return Response(json=data, status=200)
 
     def retrieve(self, request, id=None):
         """ Get one Gomoku Game with given id
             GET api/v1/board/#
         """
-        # import pdb; pdb.set_trace()
         try:
             kwargs = json.loads(request.body)
         except JSONDecodeError as e:
