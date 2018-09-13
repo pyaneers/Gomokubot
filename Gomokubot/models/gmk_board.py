@@ -1,8 +1,10 @@
 # from datetime import datetime as dt
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import relationship
+
 import transaction
 from random import randrange
+
 from sqlalchemy import (
     Boolean,
     String,
@@ -31,6 +33,7 @@ from pyramid.scripts.common import parse_vars
 from .meta import Base
 import json
 from uuid import uuid4
+
 
 
 class Board():
@@ -62,6 +65,12 @@ class Board():
         # is then turned True and turned into other player.
         self.done = False
 
+        self.p1_stone = '1'
+        self.p2_stone = '2'
+
+        # Each move made is appended to list as made.
+        self.moves = []
+
         # 2D array. self.board[0][0] to self.board[14][14]
         self.board = board
 
@@ -77,22 +86,8 @@ class Board():
             f'done: {self.done} | moves: {self.moves}'
             )
 
-    def auto_move_O(self):
-        """
-        IN: Board.board
-        OUT: self.place_piece(x, y)
-        """
-        deciding = True
-        while deciding:
-            x = int(randrange(0, 15))
-            y = int(randrange(0, 15))
-            if self.board[x][y] == 0:
-                deciding = False
-                self.place_piece(x, y)
-            else:
-                pass
+    def auto_move(self, stone):
 
-    def auto_move_X(self):
         """
         IN: Board.board
         OUT: self.place_piece(x, y)
@@ -101,25 +96,22 @@ class Board():
         while deciding:
             x = int(randrange(0, 15))
             y = int(randrange(0, 15))
-            if self.board[x][y] == 0:
+
+            if self.board[y][x] == 0:
+                self.board[y][x] = stone
                 deciding = False
-                self.place_piece(x, y)
-            else:
-                pass
+                return(y, x)
 
     def place_piece(self, stone, x=0, y=0):
-        # move argument is derived from JSON response in the form of
-        # (X,Y) X: OVER | Y: DOWN
         if self.board[x][y] == 0:
-            self.board[x][y] = stone
-            # after placement, call the Fx that initiates the
-            # sending of me move made to the waiting player.
-
+            self.board[x][y] = stone  # being 1 or 2
+            return True
         else:
-            print('coordinate marked; illegal move')
-            return IndexError
+            return False
 
-    def _check_vertical_match(self, stone, y, x):
+
+    def check_vertical_match(self, stone, y, x):
+
         """
         Validates the upper and lower stones of given coordinate,
         validates if connected 5
