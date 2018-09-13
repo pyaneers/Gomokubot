@@ -25,21 +25,11 @@ from uuid import uuid4
 
 class Board:
     def __init__(self, board=[
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
         ]):
         """
         GMK board class.
@@ -59,8 +49,8 @@ class Board:
         """
         deciding = True
         while deciding:
-            x = int(randrange(0, 15))
-            y = int(randrange(0, 15))
+            x = int(randrange(0, 5))
+            y = int(randrange(0, 5))
 
             if self.board[y][x] == 0:
                 self.board[y][x] = stone
@@ -77,7 +67,7 @@ class Board:
     def check_vertical_match(self, stone, y, x):
         """
         Validates the upper and lower stones of given coordinate,
-        validates if connected 5
+        validates if connected 3
         """
         counter = 0
         check_up = False
@@ -94,7 +84,7 @@ class Board:
             break
 
         while check_down is False:
-            for e in range(x + 1, 15):
+            for e in range(x + 1, 5):
                 if self.board[y][e] is stone:
                     counter += 1
                 else:
@@ -103,13 +93,13 @@ class Board:
             check_down = True
             break
 
-        if counter <= 4:
+        if counter <= 2:
             return self._check_horizontal_match(stone, y, x)
         print('_check_vertical_match')
         return True
 
     def _check_horizontal_match(self, stone, y, x):
-        """ Validates the left and right sides of stones of given coordinate, validates if connected 5
+        """ Validates the left and right sides of stones of given coordinate, validates if connected 3
         """
         counter = 0
         check_left = False
@@ -126,7 +116,7 @@ class Board:
             break
 
         while check_right is False:
-            for e in range(y + 1, 15):
+            for e in range(y + 1, 5):
                 if self.board[e][x] is stone:
                     counter += 1
                 else:
@@ -135,7 +125,7 @@ class Board:
             check_right = True
             break
 
-        if counter <= 4:
+        if counter <= 2:
             return self._check_dignal_LR_match(stone, y, x)
         print('_check_horizontal_match')
         return True
@@ -161,7 +151,7 @@ class Board:
             break
 
         while check_upperright is False:
-            for e in range(1, 5):
+            for e in range(1, 4):
                 try:
                     if self.board[y + e][x + e] is stone:
                         counter += 1
@@ -172,7 +162,7 @@ class Board:
                     pass
             check_upperright = True
             break
-        if counter < 5:
+        if counter < 3:
             return self._check_diagnal_RL_match(stone, y, x)
         print('_check_dignal_LR_match')
         return True
@@ -186,7 +176,7 @@ class Board:
 
         while check_lowerleft is False:
             try:
-                for i in range(6):
+                for i in range(4):
                     if i > x:
                         check_lowerleft = True
                     if self.board[y - i][x + i] is stone:
@@ -200,7 +190,7 @@ class Board:
             break
 
         while check_upperright is False:
-            for e in range(1, 5):
+            for e in range(1, 3):
                 try:
                     if e > x:
                         check_upperright = True
@@ -213,7 +203,7 @@ class Board:
                     pass
             check_upperright = True
             break
-        if counter < 5:
+        if counter < 3:
             return False
         print('_check_diagnal_RL_match')
         return True
@@ -226,21 +216,12 @@ class DBBoard(Base):
     X = Column(Integer)
     Y = Column(Integer)
     gameboard = Column(JSON, default=[
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+
         ])
     finished = Column(Boolean, nullable=False, default=False)
     gametype = Column(String(31))
