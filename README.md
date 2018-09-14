@@ -82,11 +82,61 @@ pip3 install pytest.
 
 13. Run sudo nano /etc/nginx/nginx.conf and delete the contents of that file and replace them with:
 
+    ```ini
     # nginx.conf
-    user wwwd
+    user www-data;
+    worker_processes 4;
+    pid /var/run/nginx.pid;
+
+    events {
+        worker_connections 1024;
+        # multi_accept on;
+    }
+
+    http {
+
+        ##
+        # Basic Settings
+        ##
+
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 2048;
+        # server_tokens off;
+
+        server_names_hash_bucket_size 128;
+        # server_name_in_redirect off;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        ##
+        # Logging Settings
+        ##
+
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log;
+
+        ##
+        # Gzip Settings
+        ##
+
+        gzip on;
+        gzip_disable "msie6";
+
+        ##
+        # Virtual Host Configs
+        ##
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+    }
+    ```
     
 14. run sudo nano /etc/nginx/conf.d/gomokubot.conf to create a project specific conf file for your nginx server. Paste the following into it:
-    
+    ```ini
     # gomokubot.conf
     upstream gomokubot {
         server 127.0.0.1:8000;
@@ -116,7 +166,7 @@ pip3 install pytest.
             proxy_redirect          off;
         }
     }
-
+    ```
 15. Validate your settings with sudo nginx -t and look for the message that says the conf test is successful.
 
 16. check that nginx is working with sudo service nginx status
@@ -125,7 +175,7 @@ If it is not working run sudo service nginx restart
 17. install gunicorn with pip3 install gunicorn --user
 
 18. run sudo nano /etc/systemd/sytem/gunicorn.service to make a gunicorn config file. Put the following into it:
-
+    ```ini
     # gunicorn.service
     [Unit]
     Description=(your description)
@@ -140,7 +190,7 @@ If it is not working run sudo service nginx restart
 
     [Install]
     WantedBy=multi-user.target
-    
+    ```
 19. Run the following three commands:
 sudo systemctl enable gunicorn
 sudo systemctl start gunicorn
