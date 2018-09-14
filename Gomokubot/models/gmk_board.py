@@ -67,10 +67,7 @@ class Board:
             )
 
     def __repr__(self):
-        return(
-            f'<BOARD | game_id: {self.game_id} | '
-            f'done: {self.done} | moves: {self.moves}'
-            )
+        pass
 
     def auto_move(self, stone):
         """
@@ -93,7 +90,6 @@ class Board:
             return True
         else:
             return False
-
 
     def check_vertical_match(self, stone, y, x):
 
@@ -131,7 +127,9 @@ class Board:
         return True
 
     def _check_horizontal_match(self, stone, y, x):
-        """ Validates the left and right sides of stones of given coordinate, validates if connected 5
+        """
+        Validates the left and right sides of stones of given coordinate,
+        validates if connected 5.
         """
         counter = 0
         check_left = False

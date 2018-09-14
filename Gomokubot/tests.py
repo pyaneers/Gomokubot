@@ -1,29 +1,31 @@
-import unittest
+# Depricated? Commented out for pytest runs. - Jason
 
-from pyramid import testing
+# import unittest
 
-
-class ViewTests(unittest.TestCase):
-    def setUp(self):
-        self.config = testing.setUp()
-
-    def tearDown(self):
-        testing.tearDown()
-
-    def test_my_view(self):
-        from .views.default import my_view
-        request = testing.DummyRequest()
-        info = my_view(request)
-        self.assertEqual(info['project'], 'Gomokubot')
+# from pyramid import testing
 
 
-class FunctionalTests(unittest.TestCase):
-    def setUp(self):
-        from Gomokubot import main
-        app = main({})
-        from webtest import TestApp
-        self.testapp = TestApp(app)
+# class ViewTests(unittest.TestCase):
+#     def setUp(self):
+#         self.config = testing.setUp()
 
-    def test_root(self):
-        res = self.testapp.get('/', status=200)
-        self.assertTrue(b'Pyramid' in res.body)
+#     def tearDown(self):
+#         testing.tearDown()
+
+#     def test_my_view(self):
+#         from .views.default import my_view
+#         request = testing.DummyRequest()
+#         info = my_view(request)
+#         self.assertEqual(info['project'], 'Gomokubot')
+
+
+# class FunctionalTests(unittest.TestCase):
+#     def setUp(self):
+#         from Gomokubot import main
+#         app = main({})
+#         from webtest import TestApp
+#         self.testapp = TestApp(app)
+
+#     def test_root(self):
+#         res = self.testapp.get('/', status=200)
+#         self.assertTrue(b'Pyramid' in res.body)

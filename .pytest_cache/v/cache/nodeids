@@ -1,1 +1,22 @@
-[]
+[
+  "Gomokubot/models/test_gmk_board.py::test_board_import",
+  "Gomokubot/models/test_gmk_board.py::test_board_instance",
+  "Gomokubot/models/test_gmk_board.py::test_auto_move_1",
+  "Gomokubot/models/test_gmk_board.py::test_auto_move_2",
+  "Gomokubot/models/test_gmk_board.py::test_place_piece_1",
+  "Gomokubot/models/test_gmk_board.py::test_place_piece_2",
+  "Gomokubot/models/test_gmk_board.py::test_win_board_assignment",
+  "Gomokubot/models/test_gmk_board.py::test_one_board_is_board_instance",
+  "Gomokubot/models/test_gmk_board.py::test_matching_method_presence",
+  "Gomokubot/models/test_gmk_board.py::test_vertical_1",
+  "Gomokubot/models/test_gmk_board.py::test_horizontal_2",
+  "Gomokubot/models/test_gmk_board.py::test_vertical_2",
+  "Gomokubot/models/test_gmk_board.py::test_diagonal_A_2",
+  "Gomokubot/models/test_gmk_board.py::test_diagonal_B_2",
+  "Gomokubot/models/test_gmk_board.py::test_verifor_center_complete",
+  "Gomokubot/models/test_gmk_board.py::test_center_complete_vert",
+  "Gomokubot/models/test_gmk_board.py::test_center_complete_horizontal",
+  "Gomokubot/models/test_gmk_board.py::test_center_complete_diagonal_LR",
+  "Gomokubot/models/test_gmk_board.py::test_center_complete_diagonal_RL",
+  "Gomokubot/models/test_gmk_board.py::test_import_DBBoard"
+]

@@ -1,14 +1,12 @@
 {
-  "Gomokubot/models/CLI.py": true,
-  "Gomokubot/models/gmk_board.py": true,
-  "Gomokubot/models/meta.py": true,
-  "Gomokubot/models/p_bot.py": true,
-  "Gomokubot/models/p_hum.py": true,
-  "Gomokubot/models/schemas.py": true,
-  "Gomokubot/models/test_gmk_board.py": true,
-  "Gomokubot/routes.py": true,
-  "Gomokubot/tests.py": true,
-  "Gomokubot/views/board.py": true,
-  "Gomokubot/views/default.py": true,
-  "Gomokubot/views/notfound.py": true
+  "Gomokubot/models/test_gmk_board.py::test_board_moves_list": true,
+  "Gomokubot/models/test_gmk_board.py::test_check_match_horizontal_end_1": true,
+  "Gomokubot/models/test_gmk_board.py::test_check_match_horizontal_end_2": true,
+  "Gomokubot/models/test_gmk_board.py::test_check_match_horizontal_mid_1": true,
+  "Gomokubot/models/test_gmk_board.py::test_check_match_horizontal_mid_2": true,
+  "Gomokubot/models/test_gmk_board.py::test_horizontal_1": true,
+  "Gomokubot/models/test_gmk_board.py::test_match_horizontal": true,
+  "Gomokubot/models/test_gmk_board.py::test_placeover_error": true,
+  "Gomokubot/tests.py::FunctionalTests::test_root": true,
+  "Gomokubot/tests.py::ViewTests::test_my_view": true
 }

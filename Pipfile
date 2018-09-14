@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 gomokubot = {editable = true, path = "."}
+pytest-coverage = "*"
 
 [dev-packages]
 "flake8" = "*"
