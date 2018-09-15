@@ -1,1 +1,19 @@
-[]
+[
+  "Gomokubot/tests/test_gmk_board.py::test_board_import",
+  "Gomokubot/tests/test_gmk_board.py::test_board_instance",
+  "Gomokubot/tests/test_gmk_board.py::test_board_done",
+  "Gomokubot/tests/test_gmk_board.py::test_board_finished",
+  "Gomokubot/tests/test_gmk_board.py::test_board_board",
+  "Gomokubot/tests/test_gmk_board.py::test_for_automove",
+  "Gomokubot/tests/test_gmk_board.py::test_place_piece",
+  "Gomokubot/tests/test_gmk_board.py::test_win_validation",
+  "Gomokubot/tests/test_gmk_board.py::test_vertical_win",
+  "Gomokubot/tests/test_gmk_board.py::test_horizontal_win",
+  "Gomokubot/tests/test_gmk_board.py::test_diagnal_win_1",
+  "Gomokubot/tests/test_gmk_board.py::test_diagnal_win_2",
+  "Gomokubot/tests/test_integration.py::test_home_route",
+  "Gomokubot/tests/test_integration.py::test_bad_route",
+  "Gomokubot/tests/test_integration.py::test_create_board",
+  "Gomokubot/tests/test_integration.py::test_get_all_boards",
+  "Gomokubot/tests/test_integration.py::test_update_board"
+]

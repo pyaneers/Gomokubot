@@ -8,10 +8,14 @@ from random import randrange
 
 class Game:
     def __init__(self):
+        """ state of a game being persistantly updated
+        """
         self.uuid = ''
         self.board = []
 
     def place_piece(self, stone, x=0, y=0):
+        """ updates a board
+        """
         if self.board[x][y] == 0:
             self.board[x][y] = stone  # being 1 or 2
             return True
@@ -19,7 +23,6 @@ class Game:
             return False
 
     def check_vertical_match(self, stone, y, x):
-
         """
         Validates the upper and lower stones of given coordinate,
         validates if connected 5
@@ -81,13 +84,12 @@ class Game:
             break
 
         if counter <= 4:
-            # import pdb; pdb.set_trace()
             return self._check_dignal_LR_match(stone, y, x)
         print('_check_horizontal_match')
         return True
 
     def _check_dignal_LR_match(self, stone, y, x):
-        """
+        """ Validates a diagnal
         """
         # import pdb; pdb.set_trace()
         counter = 0
@@ -126,7 +128,7 @@ class Game:
         return True
 
     def _check_diagnal_RL_match(self, stone, y, x):
-        """
+        """ validates a win of diagal
         """
         counter = 0
         check_lowerleft = False
@@ -169,6 +171,8 @@ class Game:
 
 
 def play_again():
+    """ asks to play a new game
+    """
     print('Would you like to play again? y/n')
     userinput = input()
     if userinput is 'y':
@@ -256,6 +260,8 @@ def flip():
 
 
 def validate_opponent(bd, response):
+    """ validates a opponents coordinates
+    """
     # import pdb; pdb.set_trace()
     data = json.loads(response)
     # import pdb; pdb.set_trace()
@@ -275,16 +281,18 @@ def send_json(bd, xaxis, yaxis):
     """ Sends json to server PUT
     """
     # Deployed AWS (Production)
-    # url = 'http://ec2-18-223-100-124.us-east-2.compute.amazonaws.com/api/v1/board'
+    url = 'http://ec2-18-218-190-194.us-east-2.compute.amazonaws.com/api/v1/board/1'
 
     # Local (Development)
-    url = 'http://localhost:6543/api/v1/board/1'
+    # url = 'http://localhost:6543/api/v1/board/1'
     update = {'uuid': bd['uuid'], 'X': str(xaxis), 'Y': str(yaxis), 'stone': str(bd['stone'])}
     send_info = json.dumps(update)
     return requests.put(url, data=send_info)
 
 
 def validate_usermove(bd, xaxis, yaxis):
+    """ validates a move for a coordinate
+    """
     current_game = Game()
     current_game.board = bd['gameboard']
     return current_game.check_vertical_match(bd['stone'], yaxis, xaxis)
@@ -311,10 +319,10 @@ def new_game():
     """ Initiates a new game and sends POST request to DB to create a new data set
     """
     # Deployed AWS (Production)
-    # url = 'http://ec2-18-223-100-124.us-east-2.compute.amazonaws.com/api/v1/board'
+    url = 'http://ec2-18-218-190-194.us-east-2.compute.amazonaws.com/api/v1/board'
 
     # Local (Development)
-    url = 'http://localhost:6543/api/v1/board'
+    # url = 'http://localhost:6543/api/v1/board'
 
     response = requests.post(url)
     if response.status_code == 201:
@@ -331,6 +339,8 @@ def cls():
 
 
 def play_game():
+    """ entire process of playing game
+    """
     session = True
     while session:
         bd = new_game()

@@ -21,35 +21,32 @@ class Game:
         game id for each instance.
         moves in order by play
         """
-        # self.game_id = str(uuid4())
-
-        # remains False until the board is read with victory conditions,
-        # is then turned True and turned into other player.
         self.done = False
 
         self.p1_stone = '1'
         self.p2_stone = '2'
 
-        # Each move made is appended to list as made.
         self.moves = []
 
-        # 2D array. self.board[0][0] to self.board[14][14]
         self.board = board
 
     def __str__(self):
+        """ string of class
+        """
         return(
             f'game_id: {self.game_id} | '
             f'done: {self.done} | moves: {self.moves}'
             )
 
     def __repr__(self):
+        """ sting for dev
+        """
         return(
             f'<BOARD | game_id: {self.game_id} | '
             f'done: {self.done} | moves: {self.moves}'
             )
 
     def auto_move(self, stone):
-
         """
         IN: Board.board
         OUT: self.place_piece(x, y)
@@ -65,15 +62,16 @@ class Game:
                 return(y, x)
 
     def place_piece(self, stone, x=0, y=0):
+        """ updates a board
+        """
         if self.board[x][y] == 0:
-            self.board[x][y] = stone  # being 1 or 2
+            self.board[x][y] = stone
             return True
         else:
             return False
 
 
     def check_vertical_match(self, stone, y, x):
-
         """
         Validates the upper and lower stones of given coordinate,
         validates if connected 5
@@ -135,21 +133,18 @@ class Game:
             break
 
         if counter <= 4:
-            # import pdb; pdb.set_trace()
             return self._check_dignal_LR_match(stone, y, x)
         print('_check_horizontal_match')
         return True
 
     def _check_dignal_LR_match(self, stone, y, x):
+        """ Validates the diagnal win
         """
-        """
-        # import pdb; pdb.set_trace()
         counter = 0
         check_lowerleft = False
         check_upperright = False
 
         while check_lowerleft is False:
-            # import pdb; pdb.set_trace()
             for i in range(6):
                 try:
                     if self.board[y - i][x - i] is stone:
@@ -180,7 +175,7 @@ class Game:
         return True
 
     def _check_diagnal_RL_match(self, stone, y, x):
-        """
+        """ validates diagnal win
         """
         counter = 0
         check_lowerleft = False
@@ -203,7 +198,6 @@ class Game:
 
         while check_upperright is False:
             for e in range(1, 5):
-                # import pdb; pdb.set_trace()
                 try:
                     if e > x:
                         check_upperright = True

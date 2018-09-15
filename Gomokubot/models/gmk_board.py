@@ -24,6 +24,8 @@ from uuid import uuid4
 
 
 class Board:
+    """ Base board class for instance of a ongoing game
+    """
     def __init__(self, board=[
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -51,10 +53,6 @@ class Board:
         # remains False until the board is read with victory conditions,
         # is then turned True and turned into other player.
         self.done = False
-
-        self.p1_stone = '1'
-        self.p2_stone = '2'
-
         self.finished = False
 
         # 2D array. self.board[0][0] to self.board[14][14]
@@ -88,15 +86,15 @@ class Board:
                 return(y, x)
 
     def place_piece(self, stone, x=0, y=0):
+        """ selects a random coordinates
+        """
         if self.board[x][y] == 0:
-            self.board[x][y] = stone  # being 1 or 2
+            self.board[x][y] = stone
             return True
         else:
             return False
 
-
     def check_vertical_match(self, stone, y, x):
-
         """
         Validates the upper and lower stones of given coordinate,
         validates if connected 5
@@ -158,21 +156,18 @@ class Board:
             break
 
         if counter <= 4:
-            # import pdb; pdb.set_trace()
             return self._check_dignal_LR_match(stone, y, x)
         print('_check_horizontal_match')
         return True
 
     def _check_dignal_LR_match(self, stone, y, x):
+        """ validates a win of a diagnal
         """
-        """
-        # import pdb; pdb.set_trace()
         counter = 0
         check_lowerleft = False
         check_upperright = False
 
         while check_lowerleft is False:
-            # import pdb; pdb.set_trace()
             for i in range(6):
                 try:
                     if self.board[y - i][x - i] is stone:
@@ -203,7 +198,7 @@ class Board:
         return True
 
     def _check_diagnal_RL_match(self, stone, y, x):
-        """
+        """ validates a win for another diagnal
         """
         counter = 0
         check_lowerleft = False
@@ -246,6 +241,8 @@ class Board:
 
 
 class DBBoard(Base):
+    """ Base class for DB class
+    """
     __tablename__ = 'gameboards'
     id = Column(Integer, primary_key=True)
     uuid = Column(String(255), nullable=False)
@@ -270,6 +267,7 @@ class DBBoard(Base):
         ])
     finished = Column(Boolean, nullable=False, default=False)
     gametype = Column(String(31))
+    stone = Column(Integer)
 
     @classmethod
     def new(cls, request=None, **kwargs):
