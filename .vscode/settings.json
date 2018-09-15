@@ -1,3 +1,7 @@
 {
-    "python.pythonPath": "/Users/jongjinbaik/.local/share/virtualenvs/Gomokubot-23bLQ8cc/bin/python"
+    "python.pythonPath": "/Users/jongjinbaik/.local/share/virtualenvs/Gomokubot-23bLQ8cc/bin/python",
+    "python.unitTest.promptToConfigure": false,
+    "python.unitTest.pyTestEnabled": false,
+    "python.unitTest.unittestEnabled": false,
+    "python.unitTest.nosetestsEnabled": false
 }

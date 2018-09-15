@@ -1,31 +1,4 @@
-from sqlalchemy.exc import DBAPIError
-from sqlalchemy.orm import relationship
-import transaction
-from random import randrange
-from sqlalchemy import (
-    Boolean,
-    String,
-    Column,
-    Text,
-    Integer,
-    JSON,
-)
-from sqlalchemy import engine_from_config
-from sqlalchemy.orm import sessionmaker
-import zope.sqlalchemy
-from pyramid.paster import (
-    get_appsettings,
-    setup_logging,
-)
-from pyramid.scripts.common import parse_vars
-from .meta import Base
-import json
-from uuid import uuid4
-
-
-class Board:
-    """ Base board class for instance of a ongoing game
-    """
+class Game:
     def __init__(self, board=[
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -48,23 +21,26 @@ class Board:
         game id for each instance.
         moves in order by play
         """
-        # self.game_id = str(uuid4())
-
-        # remains False until the board is read with victory conditions,
-        # is then turned True and turned into other player.
         self.done = False
-        self.finished = False
 
-        # 2D array. self.board[0][0] to self.board[14][14]
+        self.p1_stone = '1'
+        self.p2_stone = '2'
+
+        self.moves = []
+
         self.board = board
 
     def __str__(self):
+        """ string of class
+        """
         return(
             f'game_id: {self.game_id} | '
             f'done: {self.done} | moves: {self.moves}'
             )
 
     def __repr__(self):
+        """ sting for dev
+        """
         return(
             f'<BOARD | game_id: {self.game_id} | '
             f'done: {self.done} | moves: {self.moves}'
@@ -86,13 +62,14 @@ class Board:
                 return(y, x)
 
     def place_piece(self, stone, x=0, y=0):
-        """ selects a random coordinates
+        """ updates a board
         """
         if self.board[x][y] == 0:
             self.board[x][y] = stone
             return True
         else:
             return False
+
 
     def check_vertical_match(self, stone, y, x):
         """
@@ -161,7 +138,7 @@ class Board:
         return True
 
     def _check_dignal_LR_match(self, stone, y, x):
-        """ validates a win of a diagnal
+        """ Validates the diagnal win
         """
         counter = 0
         check_lowerleft = False
@@ -198,7 +175,7 @@ class Board:
         return True
 
     def _check_diagnal_RL_match(self, stone, y, x):
-        """ validates a win for another diagnal
+        """ validates diagnal win
         """
         counter = 0
         check_lowerleft = False
@@ -221,7 +198,6 @@ class Board:
 
         while check_upperright is False:
             for e in range(1, 5):
-                # import pdb; pdb.set_trace()
                 try:
                     if e > x:
                         check_upperright = True
@@ -238,100 +214,3 @@ class Board:
             return False
         print('_check_diagnal_RL_match')
         return True
-
-
-class DBBoard(Base):
-    """ Base class for DB class
-    """
-    __tablename__ = 'gameboards'
-    id = Column(Integer, primary_key=True)
-    uuid = Column(String(255), nullable=False)
-    X = Column(Integer)
-    Y = Column(Integer)
-    gameboard = Column(JSON, default=[
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ])
-    finished = Column(Boolean, nullable=False, default=False)
-    gametype = Column(String(31))
-    stone = Column(Integer)
-
-    @classmethod
-    def new(cls, request=None, **kwargs):
-        """
-            Creates a new entry in our DB for this new game and board
-        """
-        if request is None:
-            raise DBAPIError
-        board = cls(**kwargs)
-        request.dbsession.add(board)
-        request.dbsession
-
-        return request.dbsession.query(cls).filter(
-            cls.uuid == kwargs['uuid']).one_or_none()
-
-    @classmethod
-    def update(cls, newupdate, request=None):
-        """
-            Update a gameboard with new data. Note the incoming kwargs will need a JSON object called gameboard assigned to it.
-        """
-        if request is None:
-            raise DBAPIError
-        gb = newupdate['gameboard']
-        done = newupdate['finished']
-        data = {'gameboard': gb, 'finished': done}
-
-        # Due to commit failed to work, following code were copied and pasted to load transaction manager
-        config_uri = 'development.ini'
-        options = parse_vars([])
-        setup_logging(config_uri)
-        settings = get_appsettings(config_uri, options=options)
-
-        engine = engine_from_config(settings, 'sqlalchemy.')
-
-        Base.metadata.create_all(engine)
-
-        factory = sessionmaker()
-        factory.configure(bind=engine)
-        session_factory = factory
-
-        with transaction.manager:
-            dbsession = session_factory()
-            zope.sqlalchemy.register(dbsession, transaction_manager=transaction.manager)
-            game = dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).first()
-            game.gameboard = newupdate['gameboard']
-            dbsession.flush()
-        engine.dispose()
-
-        return request.dbsession.query(cls).filter(cls.uuid == newupdate['uuid']).one_or_none()
-
-    @classmethod
-    def retrieve(cls, request=None, **kwargs):
-        """
-            Get a specific gameboard
-        """
-        if request is None:
-            raise DBAPIError
-        return request.dbsession.query(cls).filter(cls.uuid == kwargs['uuid']).one_or_none()
-
-    @classmethod
-    def all(cls, request):
-        """ return all of gameboard data
-        """
-        if request.dbsession is None:
-            raise DBAPIError
-
-        return request.dbsession.query(cls).all()
